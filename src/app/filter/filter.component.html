@@ -3,6 +3,7 @@
     <div class="row">
       <label>{{prop.name | titlecase }}</label>
       <div [ngSwitch]="prop.type" class="field-group">
+        <!-- string -->
         <ng-container *ngSwitchCase="'string'">
           <div class="col6">
             <input type="text" [formControlName]="prop.name" [id]="prop.name" />
@@ -16,26 +17,30 @@
             </select>
           </div>
         </ng-container>
+
+        <!-- date -->
         <ng-container *ngSwitchCase="'date'">
             <div class="col5">
-              <input type="date" [formControlName]="prop.name+'__gt'" [id]="prop.name+'__gt'" />
+              <input type="date" [formControlName]="prop.name+'__$gte'"/>
             </div>
             <div class="col2" style="text-align: center;">
                 to
             </div>
             <div class="col5">
-                <input type="date" [formControlName]="prop.name+'__lt'" [id]="prop.name+'__lt'" />
+                <input type="date" [formControlName]="prop.name+'__$lte'"/>
             </div>
         </ng-container>
+
+        <!-- number -->
         <ng-container *ngSwitchCase="'number'">
             <div class="col5">
-              <input type="number" [formControlName]="prop.name+'__gt'" [id]="prop.name+'__gt'" />
+              <input type="number" [formControlName]="prop.name+'__$gte'"/>
             </div>
             <div class="col2" style="text-align: center;">
                 to
             </div>
             <div class="col5">
-                <input type="number" [formControlName]="prop.name+'__lt'" [id]="prop.name+'__lt'" />
+                <input type="number" [formControlName]="prop.name+'__$lte'" />
             </div>
         </ng-container>
       </div>

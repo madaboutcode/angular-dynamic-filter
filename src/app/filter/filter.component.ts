@@ -14,7 +14,7 @@ export class FilterComponent implements OnInit {
   stringOperators = {
     'contains': s => `/${s}/`,
     'startswith': s => `/^${s}/`,
-    'equals': s => `/${s}$/`
+    'endswith': s => `/${s}$/`
   };
   stringOpNames;
   query;
@@ -32,8 +32,8 @@ export class FilterComponent implements OnInit {
     const formFields = {};
     this.schema.forEach(field => {
       if (this.isRangeField(field)) {
-        formFields[`${field.name}__gt`] = new FormControl('');
-        formFields[`${field.name}__lt`] = new FormControl('');
+        formFields[`${field.name}__$gte`] = new FormControl('');
+        formFields[`${field.name}__$lte`] = new FormControl('');
       }
       if (this.isString(field)) {
         formFields[field.name] = new FormControl('');
