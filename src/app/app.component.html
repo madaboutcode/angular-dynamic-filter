@@ -1,0 +1,10 @@
+<div class="container">
+  <h1>
+    {{ title }}
+  </h1>
+  <a class="show-schema-link" href="#">Show Schema</a>
+  <div class="schema">
+      <pre class="code">{{schema|json}}</pre>
+    </div>
+  <app-filter [schema]="schema"></app-filter>
+</div>
