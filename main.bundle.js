@@ -143,7 +143,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/filter/filter.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (ngSubmit)=\"onSubmit(form.value)\" [formGroup]=\"form\">\n  <div *ngFor=\"let prop of schema; \">\n    <div class=\"row\">\n      <label>{{prop.name | titlecase }}</label>\n      <div [ngSwitch]=\"prop.type\" class=\"field-group\">\n        <ng-container *ngSwitchCase=\"'string'\">\n          <div class=\"col6\">\n            <input type=\"text\" [formControlName]=\"prop.name\" [id]=\"prop.name\" />\n          </div>\n          <div class=\"col2\" style=\"text-align: center;\">\n              operator\n          </div>\n          <div class=\"col4\">\n            <select [formControlName]=\"prop.name+'__strop'\">\n              <option *ngFor=\"let option of stringOpNames\" [value]=\"option\">{{option}}</option>\n            </select>\n          </div>\n        </ng-container>\n        <ng-container *ngSwitchCase=\"'date'\">\n            <div class=\"col5\">\n              <input type=\"date\" [formControlName]=\"prop.name+'__gt'\" [id]=\"prop.name+'__gt'\" />\n            </div>\n            <div class=\"col2\" style=\"text-align: center;\">\n                to\n            </div>\n            <div class=\"col5\">\n                <input type=\"date\" [formControlName]=\"prop.name+'__lt'\" [id]=\"prop.name+'__lt'\" />\n            </div>\n        </ng-container>\n        <ng-container *ngSwitchCase=\"'number'\">\n            <div class=\"col5\">\n              <input type=\"number\" [formControlName]=\"prop.name+'__gt'\" [id]=\"prop.name+'__gt'\" />\n            </div>\n            <div class=\"col2\" style=\"text-align: center;\">\n                to\n            </div>\n            <div class=\"col5\">\n                <input type=\"number\" [formControlName]=\"prop.name+'__lt'\" [id]=\"prop.name+'__lt'\" />\n            </div>\n        </ng-container>\n      </div>\n    </div>\n  </div>\n  <div class=\"row\" style=\"text-align: center\">\n    <button type=\"submit\">Search</button>\n  </div>\n</form>\n\n\n<ng-container  *ngIf=\"query\">\n<h3>query</h3>\n<pre class=\"code\">{{query|json}}</pre>\n</ng-container>"
+module.exports = "<form (ngSubmit)=\"onSubmit(form.value)\" [formGroup]=\"form\">\n  <div *ngFor=\"let prop of schema; \">\n    <div class=\"row\">\n      <label>{{prop.name | titlecase }}</label>\n      <div [ngSwitch]=\"prop.type\" class=\"field-group\">\n        <!-- string -->\n        <ng-container *ngSwitchCase=\"'string'\">\n          <div class=\"col6\">\n            <input type=\"text\" [formControlName]=\"prop.name\" [id]=\"prop.name\" />\n          </div>\n          <div class=\"col2\" style=\"text-align: center;\">\n              operator\n          </div>\n          <div class=\"col4\">\n            <select [formControlName]=\"prop.name+'__strop'\">\n              <option *ngFor=\"let option of stringOpNames\" [value]=\"option\">{{option}}</option>\n            </select>\n          </div>\n        </ng-container>\n\n        <!-- date -->\n        <ng-container *ngSwitchCase=\"'date'\">\n            <div class=\"col5\">\n              <input type=\"date\" [formControlName]=\"prop.name+'__$gte'\"/>\n            </div>\n            <div class=\"col2\" style=\"text-align: center;\">\n                to\n            </div>\n            <div class=\"col5\">\n                <input type=\"date\" [formControlName]=\"prop.name+'__$lte'\"/>\n            </div>\n        </ng-container>\n\n        <!-- number -->\n        <ng-container *ngSwitchCase=\"'number'\">\n            <div class=\"col5\">\n              <input type=\"number\" [formControlName]=\"prop.name+'__$gte'\"/>\n            </div>\n            <div class=\"col2\" style=\"text-align: center;\">\n                to\n            </div>\n            <div class=\"col5\">\n                <input type=\"number\" [formControlName]=\"prop.name+'__$lte'\" />\n            </div>\n        </ng-container>\n      </div>\n    </div>\n  </div>\n  <div class=\"row\" style=\"text-align: center\">\n    <button type=\"submit\">Search</button>\n  </div>\n</form>\n\n\n<ng-container  *ngIf=\"query\">\n<h3>query</h3>\n<pre class=\"code\">{{query|json}}</pre>\n</ng-container>"
 
 /***/ }),
 
@@ -170,7 +170,7 @@ var FilterComponent = (function () {
         this.stringOperators = {
             'contains': function (s) { return "/" + s + "/"; },
             'startswith': function (s) { return "/^" + s + "/"; },
-            'equals': function (s) { return "/" + s + "$/"; }
+            'endswith': function (s) { return "/" + s + "$/"; }
         };
         this.stringOpNames = Object.keys(this.stringOperators);
     }
@@ -183,8 +183,8 @@ var FilterComponent = (function () {
         var formFields = {};
         this.schema.forEach(function (field) {
             if (_this.isRangeField(field)) {
-                formFields[field.name + "__gt"] = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('');
-                formFields[field.name + "__lt"] = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('');
+                formFields[field.name + "__$gte"] = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('');
+                formFields[field.name + "__$lte"] = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('');
             }
             if (_this.isString(field)) {
                 formFields[field.name] = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormControl */]('');
